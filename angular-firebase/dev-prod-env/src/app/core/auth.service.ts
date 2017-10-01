@@ -7,7 +7,7 @@ import * as firebase from 'firebase';
 @Injectable()
 export class AuthService {
 
-	authState: any = null;
+	authState: firebase.User = null;
 
   constructor(private afAuth: AngularFireAuth,
               private db: AngularFireDatabase,
@@ -72,6 +72,29 @@ export class AuthService {
 	    .catch(error => console.log(error));
 	}
 
+	anonymousLogin() {
+		return this.afAuth.auth.signInAnonymously()
+			.then(() => console.log("successful login"))
+			.catch(error => console.log(error));
+
+	}
+
+	anonymousUpgrade() {
+		// const anonId = this.currentUserId;
+
+		// // login with google
+		// return this.googleLogin().then( () => {
+		// 	// get the anonymous data snapshot
+		// 	this.db.object(anonId).subscribe(snapshot => {
+		// 		// map the anonymous user data to the new account.
+		// 		this.db.object(this.currentUserId).update(snapshot);
+		// 	})
+		// });
+
+		const provider = new firebase.auth.GoogleAuthProvider();
+		//firebase.auth().currentUser.linkWithPopup(provider);
+		this.authState.linkWithPopup(provider);
+	}
 
 	emailLogin(email:string, password:string) {
 	   return this.afAuth.auth.signInWithEmailAndPassword(email, password)

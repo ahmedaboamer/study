@@ -25,4 +25,9 @@ export class UserLoginComponent implements OnInit {
       .then(() => this.afterSignIn());
   }
 
+  singInAnonymously() {
+    this.auth.anonymousLogin()
+              .then(() => this.afterSignIn());
+  }
+
 }
